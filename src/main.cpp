@@ -1,20 +1,14 @@
 #include <Arduino.h>
-#include "HallSensor.h"
-#include "TreadleEvent.h"
+
+#include "SensorManager.h"
 #include "LoomController.h"
+#include "TreadleEvent.h"
 
-// Treadle 1 is connected to GPIO 4.
-HallSensor treadle1(4, 1);
-
-// Loom controller
+SensorManager sensors;
 LoomController loom;
 
-// Global event sequence counter
 uint32_t nextSequenceNumber = 1;
 
-//------------------------------------------------------------
-// Print a treadle event
-//------------------------------------------------------------
 void printTreadleEvent(const TreadleEvent& event)
 {
     Serial.print("EVENT ");
@@ -30,31 +24,33 @@ void printTreadleEvent(const TreadleEvent& event)
     Serial.print(" | ");
 
     if (event.state == TreadleState::PRESSED)
+    {
         Serial.println("PRESSED");
+    }
     else
+    {
         Serial.println("RELEASED");
+    }
 }
 
 void setup()
 {
     Serial.begin(115200);
 
-    treadle1.begin();
-    loom.begin();
+    delay(1000);
+
+    sensors.begin();
 
     Serial.println();
-    Serial.println("==================================");
-    Serial.println("LoomSense v0.2.0");
-    Serial.println("Loom Controller");
-    Serial.println("==================================");
-    Serial.println("Ready");
+    Serial.println("LoomSense Firmware");
+    Serial.println("Sensor Manager initialized");
 }
 
 void loop()
 {
     TreadleEvent event;
 
-    if (treadle1.update(event))
+    if (sensors.update(event))
     {
         event.sequenceNumber = nextSequenceNumber++;
 
@@ -62,6 +58,4 @@ void loop()
 
         loom.process(event);
     }
-
-    delay(10);
 }
