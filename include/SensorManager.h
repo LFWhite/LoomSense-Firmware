@@ -15,10 +15,12 @@ public:
     bool update(TreadleEvent& event);
 
 private:
-    static constexpr uint8_t SENSOR_COUNT = 1;
+    private:
+    static constexpr uint8_t SENSOR_COUNT = 2;
 
     HallSensor sensors[SENSOR_COUNT] = {
-        HallSensor(4, 1)
+        HallSensor(4, 1),
+        HallSensor(5, 2)
     };
 };
 
