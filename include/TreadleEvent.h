@@ -12,7 +12,7 @@ struct TreadleEvent {
     uint8_t treadleNumber;
     TreadleState state;
     uint32_t timestampMs;
-    uint32_t sequenceNumber;
+    uint32_t eventId;
 };
 
 #endif
